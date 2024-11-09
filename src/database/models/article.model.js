@@ -6,7 +6,6 @@ const articleSchema = new mongoose.Schema(
     content: { type: String, required: true },
     category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true }, 
     author: { type: mongoose.Schema.Types.ObjectId, ref: "Author", required: true },     
-    publishedAt: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );
