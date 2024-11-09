@@ -1,13 +1,14 @@
 import { User } from "../database/models/index.model.js";
-
+import { createTokens } from "../helpers/jwt.token.js";
 export const registerUser = async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
-        const newUser = new User({ name, email, password });
+        const role = req.body?.role || "user";
+        const newUser = new User({ name, email, password, role }); 
         await newUser.save();
         res.status(201).json({ message: "User registered", user: newUser });
     } catch (err) {
-        next(err);
+       next(err) 
     }
 };
 
@@ -26,14 +27,16 @@ export const loginUser = async (req, res, next) => {
         const payload = {
             id:user._id,
             name: user.name,
-            email:user.email
+            email:user.email,
+            role:user.role
         }
         const token = createTokens(payload)
-       
+        
+        
 
         res.status(200).json({ message: "User logged in", token });
     } catch (err) {
-        next(err);
+        next(err) 
     }
 };
 
@@ -41,7 +44,9 @@ export const loginUser = async (req, res, next) => {
 export const createUser = async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
-        const newUser = new User({ name, email, password });
+        const role = req.body?.role || "user";
+        const newUser = new User({ name, email, password, role });
+
         await newUser.save();
         res.status(201).json({ message: "User created", user: newUser });
     } catch (err) {
